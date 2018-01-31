@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
-# Create your models here.
+# django-taggit-0.22.2
+from taggit.managers import TaggableManager
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -33,7 +34,7 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               default='draft')
-
+    tags = TaggableManager()
 
 
     class Meta:

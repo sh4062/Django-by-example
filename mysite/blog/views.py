@@ -29,7 +29,8 @@ def post_list(request):
     return render(request,
                   'blog/post/list.html',
                   {'page': page,
-                   'posts': posts})
+                   'posts': posts,
+                   'tag':tag})
 # def post_list(request):
 #     posts = Post.published.all()
 #     return render(request,
@@ -43,7 +44,7 @@ def post_detail(request, year, month, day, post):
                                    publish__day=day)
     #List of active comments for this post
     comments = post.comments.filter(active = True)
-    new_comments = None
+    new_comment = None
 
     if request.method == 'POST':
         # A comments was posted

@@ -11,6 +11,9 @@
         {{ post.title }}
       </a>
     </h2>
+    {% if post.tags.all %}
+    <p class = "tags">Tags: {{post.tags.all|join:", "}} </p>
+    {% endif %}
     <p class="date">
       Published {{ post.publish }} by {{ post.author }}
     </p>
