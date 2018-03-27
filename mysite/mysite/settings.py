@@ -27,9 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'blog',
     'taggit',
 ]
@@ -124,6 +126,6 @@ STATIC_URL = '/static/'
 # Email
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_HOST_USER = '3465263718@qq.com'
-EMAIL_HOST_PASSWORD = 'kdhfbjpkxodtdaig' #bjfifcqegmurcjgi
+EMAIL_HOST_PASSWORD = 'vpowjgcvsykydagi' #bjfifcqegmurcjgi
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

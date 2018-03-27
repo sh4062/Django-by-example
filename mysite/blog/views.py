@@ -68,18 +68,22 @@ def post_share(request,post_id):
     sent = False
     if request.method == 'POST':
         #Form was submitted
-        form = EmailField(request.POST)
+        form = EmailPostForm(request.POST)
         if form.is_valid():
             #Form fields passed password_validation
             cd = form.cleaned_data
             #...send Email
-            post_url = request.build_absolute_url(post.get_absolute_url())
-            subject = '{}({}) recommends you reading "{}"'.format(cd['email'], post.title)
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = '{}({}) recommends you reading "{}"'.format(cd['name'],cd['email'], post.title)
             message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(post.title, post_url, cd['name'],cd['comments'])
-            send_mail(subject, message, 'admin@myblog.com',[cd['to']])
+            send_mail(subject, message, '3465263718@qq.com',[cd['to']])
+            recipient=cd['to']
             sent = True
+            
     else:
             form = EmailPostForm()
+            recipient=False
     return render(request,'blog/post/share.html', {'post' : post,
                                                        'form' : form,
-                                                       'sent' : sent})
+                                                       'sent' : sent
+                                                       ,'recipient': recipient})

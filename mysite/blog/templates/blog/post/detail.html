@@ -1,5 +1,5 @@
 {% extends "blog/base.html" %}
-
+{%load blog_tags%}
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
@@ -17,6 +17,7 @@
     <a href = "{% url "blog:post_share" post.id %}">Share this post</a>
    </br>
   </p>
+  {{ post.body|markdown}}
   <!--comments-->
   {% with comments.count as total_comments%}
    <h2>
