@@ -4,6 +4,7 @@ body {
     margin:0;
     padding:0;
     font-family:helvetica, sans-serif;
+    background: linear-gradient(to right, red , yellow);
 }
 
 p {
@@ -274,4 +275,31 @@ img.user-detail {
 .action .date {
     font-style:italic;
     color:#ccc;
+}
+
+.color2{
+    clear: none;
+    display: block;
+    float: left;
+    background: aliceblue;
+    padding: 0%;
+    opacity: 0.5;
+    margin-bottom: 1px;
+}
+
+.color1{
+    display: block;
+    float: right;
+    background: aliceblue;
+    padding: 0%;
+    opacity: 0.5;
+    margin-bottom: 1px;
+
+}
+.footer{
+    text-align: center;
+}
+
+.colorset{
+    height: 23px;
 }
