@@ -13,6 +13,8 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from .forms import ImageCreateForm
 from .models import Image
+from actions.utils import create_action
+
 
 # 我们给image_create视图添加了一个login_required装饰器，来阻止未认证的用户的连接。这段代码完成下面的工作：
 
@@ -42,6 +44,7 @@ def image_create(request):
             for x in cd:
                 new_item.tags.add(x)
             new_item.save()
+            create_action(request.user, 'bookmarked image', new_item)
 
             messages.success(request, 'Image added successfully')
             # redirect to new created item detail view
@@ -74,6 +77,7 @@ def image_like(request):
             image = Image.objects.get(id=image_id)
             if action == 'like':
                 image.user_like.add(request.user)
+                create_action(request.user, 'likes', image)
             else:
                 image.user_like.remove(request.user)
             return JsonResponse({'status': 'ok'})

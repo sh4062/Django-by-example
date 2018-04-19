@@ -259,10 +259,29 @@ a.like, a.follow { float:right; margin-top:-8px; }
     margin-bottom:20px;
 }
 #people-list .user {
-    width:180px;
-    float:left;
+    /* width:180px;
+    
     overflow:auto;
     padding:10px;
+    border-style: solid;
+    border-width: 2px; */
+    margin:0 auto;
+
+    background: #fdb455;
+
+    width:190px;
+    overflow:auto;
+    float:left;
+
+    border:2px solid darkslategray;
+
+    border-radius:30px;
+
+    text-align: center;
+
+    line-height: 50px;
+    font-size: 25px;
+    
 }
 #people-list .info { text-align:center; }
 img.user-detail {
