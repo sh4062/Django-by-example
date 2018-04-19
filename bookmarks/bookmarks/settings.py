@@ -25,19 +25,23 @@ SECRET_KEY = '5lbb)thp45w03j+@+69@51*40+g-_@$)gh(%7caqr6)m_xz%m9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['47.98.211.51','127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'account',
+    'images',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'taggit',
+    'sorl.thumbnail',
+    
     
 ]
 
@@ -125,3 +129,25 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
+
+
+# Email
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = '3465263718@qq.com'
+EMAIL_HOST_PASSWORD = 'vpowjgcvsykydagi' #bjfifcqegmurcjgi
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'account.authentication.EmailAuthBackend',
+)

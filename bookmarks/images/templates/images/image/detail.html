@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ image.title }}{% endblock %}
+
+{% block content %}
+<div class="container ">
+    <h1>{{ image.title }}</h1>
+    {% load thumbnail %}
+    {% thumbnail image.image "300" as im %}
+        <a href="{{ image.image.url|default_if_none:'#' }}">
+            <img src="{{ im.url }}" class="image-detail">
+        </a>
+    {% endthumbnail %}
+    {% with total_likes=image.user_like.count user_like=image.user_like.all %}
+        <div class="image-info">
+                <div>
+                    <span class="count">
+                        <span class="total">{{ total_likes }}</span>
+                        like{{ total_likes|pluralize }}
+                    </span>
+                    <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in user_like %}un{% endif %}like" class="like button">
+                        {% if request.user not in user_like %}
+                            Like
+                        {% else %}
+                            Unlike
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="">
+                {% for tag in image.tags.all %}
+                    <div>
+                        
+                        <p  class="label label-default">{{ tag }}</p>
+                    </div>
+                {% empty %}
+                    No tags yet.
+                {% endfor %}
+            </div>
+                
+            {{ image.description|linebreaks }}
+        </div>
+        
+            <br>
+        
+
+        <div class="image-likes">
+            {% for user in image.user_like.all %}
+                <div>
+                       {% if user.profile.photo %}
+                       <img src="{{ user.profile.photo.url|default_if_none:'#' }}">
+                       {% endif %}
+                     
+                    {% comment %}<img src="{{ user.profile.photo.url|default_if_none:'#' }}">{% endcomment %}
+                    {% comment %} {% endif %}  {% endcomment %}
+                    
+                    <p >Users like this picture:</p>
+                    <p class="label label-info">{{ user.first_name }}</p>
+                </div>
+            {% empty %}
+                Nobody likes this image yet.
+            {% endfor %}
+        </div>
+    
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block domready %}
+    $('a.like').click(function(e){
+        e.preventDefault();
+        $.post('{% url "images:like" %}',
+            {
+                id: $(this).data('id'),
+                action: $(this).data('action')
+                
+            },
+            
+            function(data){
+                if (data['status'] == 'ok')
+                {
+                    var previous_action = $('a.like').data('action');
+
+                    // toggle data-action
+                    $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+                    // toggle link text
+                    $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
+
+                    // update total likes
+                    var previous_likes = parseInt($('span.count .total').text());
+                    $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+                }
+        });
+
+    });
+{% endblock %}

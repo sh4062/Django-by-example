@@ -12,6 +12,7 @@
         crossorigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <link href="{% static "css/bookmarklet.css" %}" rel="stylesheet">
     <style type="text/css">
         /* 动态为footer添加类fixed-bottom */
 
@@ -21,6 +22,7 @@
             width: 100%;
         }
     </style>
+
     <script type="text/javascript">
         $(function () {
             function footerPosition() {
@@ -38,6 +40,7 @@
             $(window).resize(footerPosition);
         });
     </script>
+    
 
 
 </head>
@@ -45,30 +48,39 @@
 <body id="gradient">
 
 
-        <div id="header">
-                <span class="logo">Bookmarks</span>
-                {% if request.user.is_authenticated %}
-                     <ul class="menu">
-                      <li {% if section == "dashboard" %}class="selected"{% endif %}>
-                        <a href="{% url "dashboard" %}">My dashboard</a>
-                      </li>
-                      <li {% if section == "images" %}class="selected"{% endif %}>
-                        <a href="#">Images</a>
-                      </li>
-                      <li {% if section == "people" %}class="selected"{% endif %}>
-                        <a href="#">People</a>
-                       </li>
-                      </ul>
-                     {% endif %}
-                     <span class="user">
-                       {% if request.user.is_authenticated %}
-                         Hello {{ request.user.first_name }},
-                         <a href="{% url "logout" %}">Logout</a>
-                       {% else %}
-                         <a href="{% url "login" %}">Log-in</a>
-                       {% endif %}
-                    </span>
-                </div>
+    <div id="header">
+        <span class="logo">Bookmarks</span>
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "dashboard" %}class="selected" {% endif %}>
+                <a href="{% url "dashboard" %}">My dashboard</a>
+            </li>
+            <li {% if section == "images" %}class="selected"{% endif %}><a href="{% url "images:list" %}">Images</a></li>
+
+            <li {% if section == "people" %}class="selected" {% endif %}>
+                <a href="#">People</a>
+            </li>
+        </ul>
+        {% endif %}
+        <span class="user">
+            {% if request.user.is_authenticated %} Hello {{ request.user.first_name }},
+            <a href="{% url "logout" %}">Logout</a>
+            {% else %}
+            <a href="{% url "login" %}">Log-in</a>
+            {% endif %}
+        </span>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">
+            {{ message|safe }}
+            <a href="#" class="close"> </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div id=" content ">
         {% block content %} {% endblock %}
     </div>
@@ -85,6 +97,28 @@
 
     </footer>
     <script type="text/javascript" src="{% static "js/base.js"%}"></script>
+    
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script>
+            var csrftoken = $.cookie('csrftoken');
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            $(document).ready(function(){
+                {% block domready %}
+                {% endblock %}
+            });
+        </script>
+
 </body>
 
 </html>

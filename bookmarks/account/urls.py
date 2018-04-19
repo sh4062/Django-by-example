@@ -12,7 +12,6 @@ from django.contrib.auth.views import password_reset_done
 from django.contrib.auth.views import password_reset_confirm
 from django.contrib.auth.views import password_reset_complete
 from . import views
-
 urlpatterns = [
     # previous login view
     #url(r'^login/$',views.user_login,name = 'login'),
@@ -40,4 +39,8 @@ urlpatterns = [
     url(r'^password-reset/complete/$',
 		password_reset_complete,
 		name='password_reset_complete'),
+    url(r'^register/$', views.register, name='register'),
+    url(r'^edit/$', views.edit, name='edit'),
+
     ]
+
